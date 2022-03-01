@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-emelie-la-dev:
+  deploy-emelie-la-weather-bangkok:
     runs-on: ubuntu-latest
 
     steps:
