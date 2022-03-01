@@ -3,6 +3,7 @@
 Param(
     [string] [Parameter(Mandatory=$true)] $ResourceGroupLocation,
     [string] $ResourceGroupName = 'LogicApps',
+    [string] $password = "secrets.GREETING_SERVICE_BASIC_AUTH_PASSWORD"
     [switch] $UploadArtifacts,
     [string] $StorageAccountName,
     [string] $StorageContainerName = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts',
