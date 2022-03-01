@@ -27,8 +27,8 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
-    <Content Include="LogicApp.json" />
-    <Content Include="LogicApp.parameters.json" />
+    <Content Include="emelie-la-weather-bangkok.json" />
+    <Content Include="emelie-la-weather-bangkok.parameters.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

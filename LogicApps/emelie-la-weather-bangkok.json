@@ -1,0 +1,172 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "metadata": {
+        "description": "Name of the Logic App."
+      }
+    },
+    "logicAppLocation": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "allowedValues": [
+        "[resourceGroup().location]",
+        "eastasia",
+        "southeastasia",
+        "centralus",
+        "eastus",
+        "eastus2",
+        "westus",
+        "northcentralus",
+        "southcentralus",
+        "northeurope",
+        "westeurope",
+        "japanwest",
+        "japaneast",
+        "brazilsouth",
+        "australiaeast",
+        "australiasoutheast",
+        "southindia",
+        "centralindia",
+        "westindia",
+        "canadacentral",
+        "canadaeast",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
+        "westus2",
+        "koreacentral",
+        "koreasouth",
+        "francecentral",
+        "francesouth",
+        "uaecentral",
+        "uaenorth",
+        "southafricanorth",
+        "southafricawest",
+        "switzerlandnorth",
+        "switzerlandwest",
+        "germanynorth",
+        "germanywestcentral",
+        "norwayeast",
+        "brazilsoutheast",
+        "westus3"
+      ],
+      "metadata": {
+        "description": "Location of the Logic App."
+      }
+    },
+    "msnweather_1_Connection_Name": {
+      "type": "string",
+      "defaultValue": "msnweather"
+    },
+    "msnweather_1_Connection_DisplayName": {
+      "type": "string",
+      "defaultValue": "MSN Weather"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('logicAppName')]",
+      "type": "Microsoft.Logic/workflows",
+      "location": "[parameters('logicAppLocation')]",
+      "tags": {
+        "displayName": "LogicApp"
+      },
+      "apiVersion": "2016-06-01",
+      "properties": {
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "actions": {
+            "Get_current_weather": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['msnweather']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/current/@{encodeURIComponent('Bangkok')}",
+                "queries": {
+                  "units": "Metric"
+                }
+              },
+              "runAfter": {}
+            },
+            "HTTP": {
+              "type": "Http",
+              "inputs": {
+                "method": "POST",
+                "uri": "https://emeliefunctiondev.azurewebsites.net/api/Greeting",
+                "body": {
+                  "From": "emelie.englund@hm.com",
+                  "Message": "Good day @{body('Get_current_weather')?['responses']?['source']?['location']}. It's @{body('Get_current_weather')?['responses']?['weather']?['current']?['cap']}, @{body('Get_current_weather')?['responses']?['weather']?['current']?['temp']}@{body('Get_current_weather')?['units']?['temperature']}. Real feel is @{body('Get_current_weather')?['responses']?['weather']?['current']?['feels']}@{body('Get_current_weather')?['units']?['temperature']} because of @{body('Get_current_weather')?['responses']?['weather']?['current']?['windSpd']}@{body('Get_current_weather')?['units']?['speed']} wind. Enjoy this day!",
+                  "To": "maria.andersson@hm.com"
+                },
+                "authentication": {
+                  "type": "Basic",
+                  "username": "emelie.englund@hm.com",
+                  "password": "katt"
+                }
+              },
+              "runAfter": {
+                "Get_current_weather": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "Recurrence": {
+              "type": "Recurrence",
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              }
+            }
+          },
+          "contentVersion": "1.0.0.0",
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "msnweather": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'msnweather')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('msnweather_1_Connection_Name'))]",
+                "connectionName": "[parameters('msnweather_1_Connection_Name')]"
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('msnweather_1_Connection_Name'))]"
+      ]
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2018-07-01-preview",
+      "name": "[parameters('msnweather_1_Connection_Name')]",
+      "location": "[parameters('logicAppLocation')]",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'msnweather')]"
+        },
+        "displayName": "[parameters('msnweather_1_Connection_DisplayName')]"
+      }
+    }
+  ],
+  "outputs": {}
+}
