@@ -29,6 +29,8 @@
     <Content Include="Deploy-AzureResourceGroup.ps1" />
     <Content Include="emelie-la-weather-bangkok.json" />
     <Content Include="emelie-la-weather-bangkok.parameters.json" />
+    <None Include="emelie-la-send-greeting-invoice-to-billing-service.json" />
+    <None Include="emelie-la-send-greeting-invoice-to-billing-service.parameters.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

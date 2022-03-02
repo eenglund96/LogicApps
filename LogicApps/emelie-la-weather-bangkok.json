@@ -67,9 +67,9 @@
       "type": "string",
       "defaultValue": "MSN Weather"
     },
-      "password": {
-        "type": "string"
-      }
+    "greetingServicePassword": {
+      "type": "securestring"
+    }
   },
   "variables": {},
   "resources": [
@@ -114,7 +114,7 @@
                 "authentication": {
                   "type": "Basic",
                   "username": "emelie.englund@hm.com",
-                  "password": "katt"
+                  "greetingServicePassword": "@parameters('password')"
                 }
               },
               "runAfter": {
@@ -125,6 +125,10 @@
             }
           },
           "parameters": {
+            "password" {
+              "type": "securestring",
+              "greetingServicePassword": "@parameters('password')"
+            }
             "$connections": {
               "defaultValue": {},
               "type": "Object"

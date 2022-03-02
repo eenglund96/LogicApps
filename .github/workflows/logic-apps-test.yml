@@ -24,4 +24,4 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az group create -l westeurope -n Emelie-rg-dev
-            az deployment group create -g Emelie-rg-dev --template-file ./LogicApps/emelie-la-weather-bangkok.json --parameters ./LogicApps/emelie-la-weather-bangkok.parameters.json --parameters password=${{secrets.GREETING_SERVICE_BASIC_AUTH_PASSWORD}} 
+            az deployment group create -g Emelie-rg-dev --template-file ./LogicApps/emelie-la-weather-bangkok.json --parameters ./LogicApps/emelie-la-weather-bangkok.parameters.json --parameters greetingServicePassword=${{secrets.GREETING_SERVICE_BASIC_AUTH_PASSWORD}} 
