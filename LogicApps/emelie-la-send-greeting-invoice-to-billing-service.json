@@ -308,7 +308,7 @@
                   "type": "Http",
                   "inputs": {
                     "method": "GET",
-                    "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice/@{items('For_each_GreetingService.Invoices')?['sender']?['email']}/@{items('For_each_GreetingService.Invoices')['year']}/@{items('For_each_GreetingService.Invoices')['month']}?code=@{items('For_each_GreetingService.Invoices')?['sender']?['password']}"
+                    "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice/@{items('For_each_GreetingService.Invoices')?['sender']?['email']}/@{items('For_each_GreetingService.Invoices')['year']}/@{items('For_each_GreetingService.Invoices')['month']}?code=@{parameters('billingServicePassword')}"
                   },
                   "runAfter": {
                     "GreetingService.Invoice.Greetings_to_BillingService.Invoice.InvoiceRows": [
@@ -416,7 +416,7 @@
                       "type": "Http",
                       "inputs": {
                         "method": "PUT",
-                        "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice?code=@{body('Parse_JSON_2')?['sender']?['password']}",
+                        "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice?code=@{parameters('billingServicePassword')}",
                         "body": {
                           "id": "@body('Parse_JSON_2')?['id']",
                           "year": "@body('Parse_JSON_2')?['year']",
@@ -446,14 +446,14 @@
                         "type": "Http",
                         "inputs": {
                           "method": "POST",
-                          "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice?code=@{items('For_each_GreetingService.Invoices')?['sender']?['password']}",
+                          "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice?code=@{parameters('billingServicePassword')}",
                           "body": {
                             "year": "@body('Parse_JSON_2')?['year']",
                             "month": "@body('Parse_JSON_2')?['month']",
                             "customer": "@items('For_each_GreetingService.Invoices')?['sender']?['email']",
                             "amount": "@body('Parse_JSON_2')?['totalCost']",
                             "currency": "@body('Parse_JSON_2')?['currency']",
-                            "invoice_rows": "@body('Select')"
+                            "invoice_rows": "@body('GreetingService.Invoice.Greetings_to_BillingService.Invoice.InvoiceRows')"
                           }
                         },
                         "runAfter": {}
