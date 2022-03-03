@@ -329,89 +329,6 @@
                     ]
                   },
                   "actions": {
-                    "Parse_BillingService.Invoice": {
-                      "type": "ParseJson",
-                      "inputs": {
-                        "content": "@body('GET_BillingService.Invoice')",
-                        "schema": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer"
-                            },
-                            "sender": {
-                              "type": "object",
-                              "properties": {
-                                "firstName": {
-                                  "type": "string"
-                                },
-                                "lastName": {
-                                  "type": "string"
-                                },
-                                "email": {
-                                  "type": "string"
-                                },
-                                "password": {
-                                  "type": "string"
-                                },
-                                "created": {
-                                  "type": "string"
-                                },
-                                "updated": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "greetings": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string"
-                                  },
-                                  "message": {
-                                    "type": "string"
-                                  },
-                                  "from": {
-                                    "type": "string"
-                                  },
-                                  "to": {
-                                    "type": "string"
-                                  },
-                                  "timestamp": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "id",
-                                  "message",
-                                  "from",
-                                  "to",
-                                  "timestamp"
-                                ]
-                              }
-                            },
-                            "year": {
-                              "type": "integer"
-                            },
-                            "month": {
-                              "type": "integer"
-                            },
-                            "costPerGreeting": {
-                              "type": "integer"
-                            },
-                            "totalCost": {
-                              "type": "integer"
-                            },
-                            "currency": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      },
-                      "runAfter": {}
-                    },
                     "PUT_BillingService.Invoice": {
                       "type": "Http",
                       "inputs": {
@@ -427,17 +344,12 @@
                           "invoice_rows": "@body('GreetingService.Invoice.Greetings_to_BillingService.Invoice.InvoiceRows')"
                         }
                       },
-                      "runAfter": {
-                        "Parse_BillingService.Invoice": [
-                          "Succeeded"
-                        ]
-                      }
+                      "runAfter": {}
                     }
                   },
                   "runAfter": {
-                    "GET_BillingService.Invoice": [
-                      "Succeeded",
-                      "Failed"
+                    "Parse_BillingService.Invoice": [
+                      "Succeeded"
                     ]
                   },
                   "else": {
@@ -459,6 +371,93 @@
                         "runAfter": {}
                       }
                     }
+                  }
+                },
+                "Parse_BillingService.Invoice": {
+                  "type": "ParseJson",
+                  "inputs": {
+                    "content": "@body('GET_BillingService.Invoice')",
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "sender": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "password": {
+                              "type": "string"
+                            },
+                            "created": {
+                              "type": "string"
+                            },
+                            "updated": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "greetings": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "from": {
+                                "type": "string"
+                              },
+                              "to": {
+                                "type": "string"
+                              },
+                              "timestamp": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "message",
+                              "from",
+                              "to",
+                              "timestamp"
+                            ]
+                          }
+                        },
+                        "year": {
+                          "type": "integer"
+                        },
+                        "month": {
+                          "type": "integer"
+                        },
+                        "costPerGreeting": {
+                          "type": "integer"
+                        },
+                        "totalCost": {
+                          "type": "integer"
+                        },
+                        "currency": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "GET_BillingService.Invoice": [
+                      "Succeeded"
+                    ]
                   }
                 }
               },
