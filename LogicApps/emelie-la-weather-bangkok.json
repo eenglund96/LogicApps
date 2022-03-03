@@ -114,7 +114,7 @@
                 "authentication": {
                   "type": "Basic",
                   "username": "emelie.englund@hm.com",
-                  "greetingServicePassword": "@parameters('password')"
+                  "greetingServicePassword": "@parameters('greetingServicePassword')"
                 }
               },
               "runAfter": {
@@ -125,26 +125,25 @@
             }
           },
           "parameters": {
-            "password": {
-              "type": "securestring",
-              "greetingServicePassword": "@parameters('password')"
-            },
             "$connections": {
               "defaultValue": {},
               "type": "Object"
+            },
+            "greetingServicePassword": {
+              "type": "securestring"
             }
           },
-          "triggers": {
-            "Recurrence": {
-              "type": "Recurrence",
-              "recurrence": {
-                "frequency": "Hour",
-                "interval": 1
+            "triggers": {
+              "Recurrence": {
+                "type": "Recurrence",
+                "recurrence": {
+                  "frequency": "Hour",
+                  "interval": 1
+                }
               }
-            }
-          },
-          "contentVersion": "1.0.0.0",
-          "outputs": {}
+            },
+            "contentVersion": "1.0.0.0",
+            "outputs": {}
         },
         "parameters": {
           "$connections": {
@@ -155,6 +154,10 @@
                 "connectionName": "[parameters('msnweather_1_Connection_Name')]"
               }
             }
+          },
+          "greetingServicePassword": {
+            "type": "SecureString",
+            "value": "[parameters('greetingServicePassword')]"
           }
         }
       },
