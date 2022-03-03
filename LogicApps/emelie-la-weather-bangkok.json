@@ -125,10 +125,10 @@
             }
           },
           "parameters": {
-            "password" {
+            "password": {
               "type": "securestring",
               "greetingServicePassword": "@parameters('password')"
-            }
+            },
             "$connections": {
               "defaultValue": {},
               "type": "Object"
