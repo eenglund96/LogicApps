@@ -329,7 +329,7 @@
                     ]
                   },
                   "actions": {
-                    "Parse_JSON_2": {
+                    "Parse_BillingService.Invoice": {
                       "type": "ParseJson",
                       "inputs": {
                         "content": "@body('GET_BillingService.Invoice')",
@@ -418,17 +418,17 @@
                         "method": "PUT",
                         "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice?code=@{parameters('billingServicePassword')}",
                         "body": {
-                          "id": "@body('Parse_JSON_2')?['id']",
-                          "year": "@body('Parse_JSON_2')?['year']",
-                          "month": "@body('Parse_JSON_2')?['month']",
-                          "customer": "@body('Parse_JSON_2')?['sender']",
-                          "amount": "@body('Parse_JSON_2')?['totalCost']",
-                          "currency": "@body('Parse_JSON_2')?['currency']",
+                          "id": "@body('Parse_BillingService.Invoice')?['id']",
+                          "year": "@body('Parse_BillingService.Invoice')?['year']",
+                          "month": "@body('Parse_BillingService.Invoice')?['month']",
+                          "customer": "@body('Parse_BillingService.Invoice')?['sender']",
+                          "amount": "@body('Parse_BillingService.Invoice')?['totalCost']",
+                          "currency": "@body('Parse_BillingService.Invoice')?['currency']",
                           "invoice_rows": "@body('GreetingService.Invoice.Greetings_to_BillingService.Invoice.InvoiceRows')"
                         }
                       },
                       "runAfter": {
-                        "Parse_JSON_2": [
+                        "Parse_BillingService.Invoice": [
                           "Succeeded"
                         ]
                       }
@@ -448,11 +448,11 @@
                           "method": "POST",
                           "uri": "https://greeting-billing-service-function-dev.azurewebsites.net/api/invoice?code=@{parameters('billingServicePassword')}",
                           "body": {
-                            "year": "@body('Parse_JSON_2')?['year']",
-                            "month": "@body('Parse_JSON_2')?['month']",
+                            "year": "@body('Parse_BillingService.Invoice')?['year']",
+                            "month": "@body('Parse_BillingService.Invoice')?['month']",
                             "customer": "@items('For_each_GreetingService.Invoices')?['sender']?['email']",
-                            "amount": "@body('Parse_JSON_2')?['totalCost']",
-                            "currency": "@body('Parse_JSON_2')?['currency']",
+                            "amount": "@body('Parse_BillingService.Invoice')?['totalCost']",
+                            "currency": "@body('Parse_BillingService.Invoice')?['currency']",
                             "invoice_rows": "@body('GreetingService.Invoice.Greetings_to_BillingService.Invoice.InvoiceRows')"
                           }
                         },
